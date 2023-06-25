@@ -19,20 +19,20 @@ async function loadPeriodicTable() {
 }
 
 function findCandidates(inputWord) {
-	var oneLetterSymbols = [];
-	var twoLetterSymbols = [];
+	var oneLetterSymbols = new Set();
+	var twoLetterSymbols = new Set();
 
 	for (let i = 0; i < inputWord.length; i++) {
-		// colllect one-letter candidates
-		if (inputWord[i] in symbols && !oneLetterSymbols.includes(inputWord[i])) {
-			oneLetterSymbols.push(inputWord[i]);
+		// colllect one-letter symbol options
+		if (inputWord[i] in symbols) {
+			oneLetterSymbols.add(inputWord[i]);
 		}
 
-		// collect two-letter candidates
+		// collect two-letter symbol options
 		if (i <= (inputWord.length - 2)) {
 			let two = inputWord.slice(i, i + 2);
-			if (two in symbols && !twoLetterSymbols.includes(two)) {
-				twoLetterSymbols.push(two);
+			if (two in symbols) {
+				twoLetterSymbols.add(two);
 			}
 		}
 	}
@@ -45,51 +45,26 @@ function spellWord(candidates, charsLeft) {
 		return [];
 	}
 	else {
-		// check for two-letter symbols first
-		if (charsLeft.length >= 2) {
-			let two = charsLeft.slice(0, 2);
-			let rest = charsLeft.slice(2);
-			// found a match
-			if (candidates.includes(two)) {
-				// more characters to match?
-				if (rest.length > 0) {
-					let result = [ two, ...spellWord(candidates, rest) ];
-					if (result.join('') == charsLeft) {
-						return result;
+		for (let candidate of candidates) {
+			let chunk = charsLeft.slice(0, candidate.length);
+			if (candidate == chunk) {
+				if (charsLeft.length > chunk.length) {
+					let rest = charsLeft.slice(chunk.length);
+					let res = spellWord(candidates, rest);
+					if (res.length > 0) {
+						return [ candidate, ...res ];
 					}
 				}
 				else {
-					return [ two ];
-				}
-			}
-		}
-
-		// now check for one letter symbols
-		if (charsLeft.length >= 1) {
-			let one = charsLeft[0];
-			let rest = charsLeft.slice(1);
-			if (candidates.includes(one)) {
-				if (rest.length > 0) {
-					let result = [ one, ...spellWord(candidates, rest) ];
-					if (result.join('') == charsLeft) {
-						return result;
-					}
-				}
-				else {
-					return [ one ];
+					return [ candidate ];
 				}
 			}
 		}
 	}
-
 	return [];
 }
 
 function check(inputWord) {
-	// TODO: determine if `inputWord` can be spelled
-	// with periodic table symbols; return array with
-	// them if so (empty array otherwise)
-
 	var candidates = findCandidates(inputWord);
 	return spellWord(candidates, inputWord);
 }
