@@ -8,7 +8,7 @@ For example, the word "accept" can be spelled with Ac (Actinium) + Ce (Cerium) +
 
 The goal of this tool is to check if an input word can be "spelled" with the periodic table symbols, and then to show that sequence of element symbols.
 
-## Workshop Instructions
+## Instructions
 
 1. Check out the `start-here` branch.
 
@@ -32,6 +32,6 @@ The goal of this tool is to check if an input word can be "spelled" with the per
 
 ## Acknowledgments
 
-This workshop problem is similar to/inspired by [ChemSpeller](https://www.chemspeller.com/index.html).
+This project problem is similar to/inspired by [ChemSpeller](https://www.chemspeller.com/index.html).
 
 The JSON file holding periodic table elements was adapted from: https://github.com/Bowserinator/Periodic-Table-JSON/blob/master/PeriodicTableJSON.json
